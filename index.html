@@ -284,7 +284,7 @@ footer{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,3.25rem)}
            at https://web3forms.com and paste it in place of this one.
            It is safe for this key to be public - that is how Web3Forms
            is designed to work. -->
-      <form action="https://api.web3forms.com/submit" method="POST">
+      <form action="https://api.web3forms.com/submit" method="POST" autocomplete="off">
         <input type="hidden" name="access_key" value="3f56c67b-8743-4bcf-b5a2-2af9bf63c585">
         <div class="field">
           <label for="email">Email</label>
@@ -322,6 +322,26 @@ footer{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,3.25rem)}
     <p class="foot__fine">Independent and not affiliated with or endorsed by Columbia University.</p>
   </div>
 </footer>
+
+<!-- Empties the contact form when someone returns with the browser's
+     back button after sending an enquiry. Browsers deliberately restore
+     what you typed, which is unhelpful once the message has been sent. -->
+<script>
+(function () {
+  var form = document.querySelector('form');
+  if (!form) return;
+
+  window.addEventListener('pageshow', function (e) {
+    var nav = performance.getEntriesByType &&
+              performance.getEntriesByType('navigation')[0];
+    var cameBack = e.persisted || (nav && nav.type === 'back_forward');
+    if (!cameBack) return;
+    // Chrome refills the fields just after this event, so clear on the
+    // next tick rather than immediately.
+    setTimeout(function () { form.reset(); }, 0);
+  });
+})();
+</script>
 
 <!-- Fades sections in as you scroll. Optional - deleting the script
      block below simply makes everything appear immediately. -->
