@@ -27,6 +27,7 @@
   --accent:#3D7FBF;   /* links */
   --accent-d:#2B5F92;
   --section:clamp(3rem,9vw,5rem); /* vertical rhythm between sections */
+  --ease:cubic-bezier(.22,.61,.36,1); /* how motion accelerates */
   --display:"Instrument Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
   --body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
@@ -58,7 +59,13 @@ a:hover{color:var(--accent-d)}
 .mark::before{content:"";width:.5rem;height:.5rem;border-radius:50%;
   background:var(--accent);flex:none}
 .bar__tel{font-family:var(--display);font-weight:500;font-size:.9375rem;
-  color:var(--ink);text-decoration:none}
+  color:var(--ink);text-decoration:none;position:relative}
+.bar__tel::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;
+  background:var(--ink);transform:scaleX(0);transform-origin:left;
+  transition:transform .25s var(--ease)}
+.bar__tel:hover::after{transform:scaleX(1)}
+.mark::before{transition:transform .25s var(--ease)}
+.mark:hover::before{transform:scale(1.35)}
 
 /* ---- hero ---- */
 .hero{padding-top:var(--section);padding-bottom:clamp(2rem,5vw,3.25rem)}
@@ -72,9 +79,13 @@ h1{font-size:clamp(2.25rem,6.5vw,4rem);letter-spacing:-.03em;max-width:18ch}
   font-family:var(--display);font-size:.9375rem;font-weight:500;
   padding:.75rem 1.375rem;border-radius:2px;text-decoration:none;
   border:1px solid transparent;cursor:pointer;
-  transition:background-color .15s ease,border-color .15s ease,color .15s ease}
+  transition:background-color .2s var(--ease),border-color .2s var(--ease),
+             color .2s var(--ease),transform .2s var(--ease),box-shadow .2s var(--ease)}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0);transition-duration:.05s}
 .btn--solid{background:var(--ink);color:var(--paper)}
-.btn--solid:hover{background:var(--accent-d);color:var(--paper)}
+.btn--solid:hover{background:var(--accent-d);color:var(--paper);
+  box-shadow:0 6px 18px -6px color-mix(in srgb,var(--ink) 45%,transparent)}
 .btn--quiet{border-color:var(--rule);color:var(--ink);background:transparent}
 .btn--quiet:hover{border-color:var(--ink);background:var(--tint)}
 .btn--full{width:100%}
@@ -90,6 +101,8 @@ h1{font-size:clamp(2.25rem,6.5vw,4rem);letter-spacing:-.03em;max-width:18ch}
   background:repeating-linear-gradient(135deg,transparent 0 11px,
     color-mix(in srgb,var(--rule) 45%,transparent) 11px 12px),var(--tint)}
 .slot--sq{aspect-ratio:1}
+.shots__grid .slot{transition:transform .25s var(--ease)}
+.shots__grid li:hover .slot{transform:translateY(-4px)}
 .slot__label{font-family:var(--display);font-size:.75rem;font-weight:600;
   letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .slot__hint{font-size:.8125rem;color:var(--muted)}
@@ -104,7 +117,9 @@ h1{font-size:clamp(2.25rem,6.5vw,4rem);letter-spacing:-.03em;max-width:18ch}
 h2{font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em;max-width:20ch;
   margin-bottom:2rem}
 .rows{border-top:1px solid var(--rule);max-width:44rem}
-.row{display:grid;gap:.25rem;padding-block:1.25rem;border-bottom:1px solid var(--rule)}
+.row{display:grid;gap:.25rem;padding-block:1.25rem;border-bottom:1px solid var(--rule);
+  transition:background-color .2s var(--ease)}
+.row:hover{background:color-mix(in srgb,var(--tint) 60%,transparent)}
 @media(min-width:620px){.row{grid-template-columns:11rem 1fr;gap:1.25rem;align-items:baseline}}
 .row__k{font-family:var(--display);font-size:.75rem;font-weight:600;
   letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -121,9 +136,11 @@ form{max-width:30rem}
   font-size:.8125rem;font-weight:500}
 .field input,.field textarea{width:100%;font:inherit;font-size:1rem;
   padding:.6875rem .8125rem;color:var(--ink);background:var(--paper);
-  border:1px solid var(--rule);border-radius:2px;transition:border-color .15s ease}
+  border:1px solid var(--rule);border-radius:2px;
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
 .field input::placeholder,.field textarea::placeholder{color:#A3A8AD}
-.field input:focus,.field textarea:focus{border-color:var(--accent)}
+.field input:focus,.field textarea:focus{border-color:var(--accent);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 15%,transparent)}
 .field textarea{resize:vertical;min-height:6rem}
 input[name="botcheck"]{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .fine{margin-top:.875rem;font-size:.8125rem;color:var(--muted)}
@@ -137,8 +154,16 @@ footer{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,3.25rem)}
 .foot__fine{grid-column:1/-1;color:var(--muted);font-size:.8125rem;
   padding-top:1.25rem;border-top:1px solid var(--rule)}
 
+/* ---- reveal on scroll (script at the bottom of the page adds .in) ---- */
+.reveal{opacity:0;transform:translateY(18px);
+  transition:opacity .6s var(--ease) var(--d,0ms),
+             transform .6s var(--ease) var(--d,0ms)}
+.reveal.in{opacity:1;transform:none}
+
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
+  .reveal{opacity:1!important;transform:none!important}
+  .btn:hover,.shots__grid li:hover .slot,.mark:hover::before{transform:none!important}
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
 }
 </style>
@@ -297,6 +322,32 @@ footer{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,3.25rem)}
     <p class="foot__fine">Independent and not affiliated with or endorsed by Columbia University.</p>
   </div>
 </footer>
+
+<!-- Fades sections in as you scroll. Optional - deleting the script
+     block below simply makes everything appear immediately. -->
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) return;
+
+  var groups = ['.photo', '.offer .row', '.shots__grid li', '.contact__in > *'];
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -10% 0px' });
+
+  groups.forEach(function (sel) {
+    Array.prototype.forEach.call(document.querySelectorAll(sel), function (el, i) {
+      el.classList.add('reveal');
+      el.style.setProperty('--d', Math.min(i, 6) * 60 + 'ms');
+      io.observe(el);
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
