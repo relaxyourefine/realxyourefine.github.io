@@ -26,17 +26,21 @@
   --muted:#6C7278;    /* secondary text */
   --accent:#3D7FBF;   /* links */
   --accent-d:#2B5F92;
+  --section:clamp(3rem,9vw,5rem); /* vertical rhythm between sections */
   --display:"Instrument Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
   --body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+::selection{background:var(--accent);color:var(--paper)}
 body{
   margin:0;background:var(--paper);color:var(--ink);
   font-family:var(--body);font-size:1.0625rem;line-height:1.65;
   -webkit-font-smoothing:antialiased;
 }
 img{max-width:100%;height:auto;display:block}
-h1,h2{font-family:var(--display);font-weight:600;line-height:1.12;margin:0}
+h1,h2{font-family:var(--display);font-weight:600;line-height:1.12;margin:0;
+  text-wrap:balance}
 p{margin:0}
 ul{margin:0;padding:0;list-style:none}
 a{color:var(--accent);text-underline-offset:3px}
@@ -57,7 +61,7 @@ a:hover{color:var(--accent-d)}
   color:var(--ink);text-decoration:none}
 
 /* ---- hero ---- */
-.hero{padding-top:5rem;padding-bottom:3.25rem}
+.hero{padding-top:var(--section);padding-bottom:clamp(2rem,5vw,3.25rem)}
 .eyebrow{font-family:var(--display);font-size:.6875rem;font-weight:500;
   letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.875rem}
 h1{font-size:clamp(2.25rem,6.5vw,4rem);letter-spacing:-.03em;max-width:18ch}
@@ -72,23 +76,31 @@ h1{font-size:clamp(2.25rem,6.5vw,4rem);letter-spacing:-.03em;max-width:18ch}
 .btn--solid{background:var(--ink);color:var(--paper)}
 .btn--solid:hover{background:var(--accent-d);color:var(--paper)}
 .btn--quiet{border-color:var(--rule);color:var(--ink);background:transparent}
-.btn--quiet:hover{border-color:var(--ink)}
+.btn--quiet:hover{border-color:var(--ink);background:var(--tint)}
 .btn--full{width:100%}
 
 /* ---- photo ---- */
-.photo{margin-block:0 5rem}
-.photo img{width:100%;border-radius:2px}
-.photo__slot{display:flex;flex-direction:column;align-items:center;
+.photo{margin-block:0 var(--section)}
+.photo img,.shots img{width:100%;border-radius:2px}
+
+/* dashed placeholder box - delete these rules once real photos are in */
+.slot{display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:.35rem;text-align:center;padding:1.25rem;
   aspect-ratio:16/9;border:1px dashed var(--rule);border-radius:2px;
   background:repeating-linear-gradient(135deg,transparent 0 11px,
     color-mix(in srgb,var(--rule) 45%,transparent) 11px 12px),var(--tint)}
-.photo__label{font-family:var(--display);font-size:.75rem;font-weight:600;
+.slot--sq{aspect-ratio:1}
+.slot__label{font-family:var(--display);font-size:.75rem;font-weight:600;
   letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.photo__hint{font-size:.8125rem;color:var(--muted)}
+.slot__hint{font-size:.8125rem;color:var(--muted)}
+
+/* ---- small gallery ---- */
+.shots{padding-bottom:var(--section)}
+.shots__grid{display:grid;gap:1rem;margin:0;padding:0;list-style:none}
+@media(min-width:620px){.shots__grid{grid-template-columns:repeat(3,1fr);gap:1.25rem}}
 
 /* ---- what you get ---- */
-.offer{padding-bottom:5rem}
+.offer{padding-bottom:var(--section)}
 h2{font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em;max-width:20ch;
   margin-bottom:2rem}
 .rows{border-top:1px solid var(--rule);max-width:44rem}
@@ -99,7 +111,7 @@ h2{font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em;max-width:20ch;
 .row__v{max-width:52ch}
 
 /* ---- contact ---- */
-.contact{background:var(--tint);padding-block:5rem}
+.contact{background:var(--tint);padding-block:var(--section)}
 .contact__in{display:grid;gap:3.25rem}
 @media(min-width:800px){.contact__in{grid-template-columns:20rem 1fr;gap:5rem;align-items:start}}
 .note{margin-top:1.25rem;color:var(--muted);font-size:.9688rem}
@@ -117,7 +129,7 @@ input[name="botcheck"]{position:absolute;left:-9999px;width:1px;height:1px;opaci
 .fine{margin-top:.875rem;font-size:.8125rem;color:var(--muted)}
 
 /* ---- footer ---- */
-footer{border-top:1px solid var(--rule);padding-block:3.25rem}
+footer{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,3.25rem)}
 .foot{display:grid;gap:1.25rem}
 @media(min-width:700px){.foot{grid-template-columns:1fr 1fr}}
 .foot__name{font-family:var(--display);font-weight:600}
@@ -126,6 +138,7 @@ footer{border-top:1px solid var(--rule);padding-block:3.25rem}
   padding-top:1.25rem;border-top:1px solid var(--rule)}
 
 @media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
 }
 </style>
@@ -158,14 +171,14 @@ footer{border-top:1px solid var(--rule);padding-block:3.25rem}
   </section>
 
   <!-- EDIT ME - PHOTO
-       Replace the whole <div class="photo__slot"> below with:
+       Replace the whole <div class="slot"> below with:
          <img src="hero.jpg" alt="Describe the photo">
        Upload hero.jpg next to this file. Wide/landscape, ~1600px across.
        Resize it first — a 6MB phone photo will make the page slow. -->
   <figure class="photo wrap">
-    <div class="photo__slot" role="img" aria-label="Placeholder for tour photograph">
-      <span class="photo__label">Your photo here</span>
-      <span class="photo__hint">Low Library steps, or a group mid-tour</span>
+    <div class="slot" role="img" aria-label="Placeholder for tour photograph">
+      <span class="slot__label">Your photo here</span>
+      <span class="slot__hint">Low Library steps, or a group mid-tour</span>
     </div>
   </figure>
 
@@ -195,6 +208,36 @@ footer{border-top:1px solid var(--rule);padding-block:3.25rem}
       <li class="row">
         <span class="row__k">Rate</span>
         <span class="row__v">Quoted per group once we've talked. Ask below.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- EDIT ME - GALLERY
+       Three square placeholders. For each one, replace the whole
+         <div class="slot slot--sq"> ... </div>
+       with:
+         <img src="shot-1.jpg" alt="Describe the photo">
+       Upload the images next to this file. Square-ish, ~800px across.
+       Don't want a gallery? Delete this whole <section> block. -->
+  <section class="shots wrap">
+    <ul class="shots__grid">
+      <li>
+        <div class="slot slot--sq" role="img" aria-label="Placeholder for tour photograph">
+          <span class="slot__label">Photo 1</span>
+          <span class="slot__hint">Campus detail</span>
+        </div>
+      </li>
+      <li>
+        <div class="slot slot--sq" role="img" aria-label="Placeholder for tour photograph">
+          <span class="slot__label">Photo 2</span>
+          <span class="slot__hint">A group on the steps</span>
+        </div>
+      </li>
+      <li>
+        <div class="slot slot--sq" role="img" aria-label="Placeholder for tour photograph">
+          <span class="slot__label">Photo 3</span>
+          <span class="slot__hint">Somewhere in the city</span>
+        </div>
       </li>
     </ul>
   </section>
