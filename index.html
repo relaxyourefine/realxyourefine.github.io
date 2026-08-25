@@ -7,10 +7,9 @@
 <meta name="description" content="Private, small-group tours of Columbia University's campus and New York City.">
 
 <!-- ══════════════════════════════════════════════════════════
-     TWO THINGS TO EDIT. Both are marked EDIT ME below.
-       1. Your phone number  (search: EDIT ME - PHONE)
-       2. Your Web3Forms key (search: EDIT ME - FORM)
-     Then swap the photo placeholder (search: EDIT ME - PHOTO)
+     Phone number and Web3Forms key are both filled in.
+     Still to do: swap in real photos
+     (search: EDIT ME - PHOTO and EDIT ME - GALLERY)
      ══════════════════════════════════════════════════════════ -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -280,12 +279,13 @@ footer{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,3.25rem)}
       </div>
 
       <!-- EDIT ME - FORM
-           Replace YOUR_ACCESS_KEY_HERE below with the key Web3Forms emails you.
-           Get it at https://web3forms.com - enter your email, and the key
-           arrives in your inbox. It is safe to have this key in public code;
-           that is how Web3Forms is designed to work. -->
+           The access_key below is what delivers these enquiries to your
+           inbox. To send them to a different email address, get a new key
+           at https://web3forms.com and paste it in place of this one.
+           It is safe for this key to be public - that is how Web3Forms
+           is designed to work. -->
       <form action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+        <input type="hidden" name="access_key" value="3f56c67b-8743-4bcf-b5a2-2af9bf63c585">
         <div class="field">
           <label for="email">Email</label>
           <input id="email" type="email" name="email" required
