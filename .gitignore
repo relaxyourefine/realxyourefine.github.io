@@ -1,0 +1,16 @@
+# Operating system junk
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs and temporary files
+*.log
+*.tmp
