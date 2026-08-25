@@ -130,16 +130,37 @@ Say you want a page about pricing.
 `index.html` is special: it is what people see at `lionguide.org` itself.
 Don't rename it.
 
-## How to add your photos
+## How to change the photos
 
-Two spots are waiting for images — a large one near the top and three small
-ones further down. Both are marked with `EDIT ME - PHOTO` and
-`EDIT ME - GALLERY`, and the comment above each explains exactly what to
-replace.
+All the photos live in the **`pictures`** folder. There are four:
 
-Before uploading, **resize your photos**. A photo straight off a phone can be
-6MB, which makes the page slow to load. Aim for roughly 1600 pixels wide for
-the big image and 800 for the small ones.
+| File | Where it appears |
+| --- | --- |
+| `grad.jpg` | The big photo at the top, beside the headline |
+| `boat.jpg` | Bottom row, left |
+| `met.jpg` | Bottom row, middle |
+| `winter.jpg` | Bottom row, right |
+
+**To swap one out,** put your new picture in the `pictures` folder and
+change the matching `src="pictures/..."` in `index.html`. The spots are
+marked `EDIT ME - PHOTO` and `EDIT ME - GALLERY`.
+
+Three things to keep right:
+
+1. **Resize first.** A photo straight off a phone can be 6MB and will make
+   the page slow. Aim for about 900 pixels wide for the top photo and 700
+   for the bottom three. Any free online image resizer will do this.
+2. **Update `width` and `height`** on that `<img>` to match your new file's
+   real dimensions. If these are wrong the page jumps around while loading.
+3. **Write the `alt` text.** That is the description read aloud to blind
+   visitors and shown if the image fails to load. Describe what is in the
+   photo in a short sentence.
+
+**If a photo looks badly cropped:** the bottom three are tall pictures shown
+in square frames, so the top and bottom get trimmed. Add or adjust
+`style="object-position:center 32%"` on that `<img>` — a smaller percentage
+keeps more of the top of the picture, a larger one keeps more of the bottom.
+`winter.jpg` already uses this.
 
 ## How a change goes live
 

@@ -67,7 +67,18 @@ a:hover{color:var(--accent-d)}
 .mark:hover::before{transform:scale(1.35)}
 
 /* ---- hero ---- */
-.hero{padding-top:var(--section);padding-bottom:clamp(2rem,5vw,3.25rem)}
+.hero{padding-top:var(--section);padding-bottom:var(--section);
+  display:grid;gap:2.5rem}
+@media(min-width:900px){
+  .hero{grid-template-columns:1fr 21rem;gap:4.5rem;align-items:center}
+}
+.hero__media{margin:0}
+.hero__media img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:2px}
+@media(max-width:899px){
+  /* on phones the photo sits under the text, cropped shorter so it
+     does not push the page down */
+  .hero__media img{aspect-ratio:4/3;object-position:center 60%}
+}
 .eyebrow{font-family:var(--display);font-size:.6875rem;font-weight:500;
   letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.875rem}
 h1{font-size:clamp(2.25rem,6.5vw,4rem);letter-spacing:-.03em;max-width:18ch}
@@ -89,27 +100,14 @@ h1{font-size:clamp(2.25rem,6.5vw,4rem);letter-spacing:-.03em;max-width:18ch}
 .btn--quiet:hover{border-color:var(--ink);background:var(--tint)}
 .btn--full{width:100%}
 
-/* ---- photo ---- */
-.photo{margin-block:0 var(--section)}
-.photo img,.shots img{width:100%;border-radius:2px}
-
-/* dashed placeholder box - delete these rules once real photos are in */
-.slot{display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:.35rem;text-align:center;padding:1.25rem;
-  aspect-ratio:16/9;border:1px dashed var(--rule);border-radius:2px;
-  background:repeating-linear-gradient(135deg,transparent 0 11px,
-    color-mix(in srgb,var(--rule) 45%,transparent) 11px 12px),var(--tint)}
-.slot--sq{aspect-ratio:1}
-.shots__grid .slot{transition:transform .25s var(--ease)}
-.shots__grid li:hover .slot{transform:translateY(-4px)}
-.slot__label{font-family:var(--display);font-size:.75rem;font-weight:600;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.slot__hint{font-size:.8125rem;color:var(--muted)}
-
 /* ---- small gallery ---- */
 .shots{padding-bottom:var(--section)}
 .shots__grid{display:grid;gap:1rem;margin:0;padding:0;list-style:none}
 @media(min-width:620px){.shots__grid{grid-template-columns:repeat(3,1fr);gap:1.25rem}}
+.shots__grid li{overflow:hidden;border-radius:2px}
+.shots__grid img{width:100%;aspect-ratio:1;object-fit:cover;
+  transition:transform .35s var(--ease)}
+.shots__grid li:hover img{transform:scale(1.04)}
 
 /* ---- what you get ---- */
 .offer{padding-bottom:var(--section)}
@@ -162,7 +160,7 @@ footer{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,3.25rem)}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .reveal{opacity:1!important;transform:none!important}
-  .btn:hover,.shots__grid li:hover .slot,.mark:hover::before{transform:none!important}
+  .btn:hover,.shots__grid li:hover img,.mark:hover::before{transform:none!important}
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
 }
 </style>
@@ -179,31 +177,31 @@ footer{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,3.25rem)}
 
 <main>
 
-  <section class="hero wrap">
-    <p class="eyebrow">Morningside Heights &middot; New York</p>
-    <h1>Student City Guides - A fresh perspective</h1>
-    <p class="sub">
-      Free private, small-group tours of New York City and the Columbia Campus,
-      led by current students. Designed for anyone looking for a fresh perspective on the city. We highly welcome prospective students and families.
-    </p>
-    <div class="acts">
-      <a class="btn btn--solid" href="#contact">Ask about a tour</a>
-      <!-- EDIT ME - PHONE -->
-      <a class="btn btn--quiet" href="tel:+19796186395">Call (979) 618-6395</a>
-    </div>
-  </section>
-
   <!-- EDIT ME - PHOTO
-       Replace the whole <div class="slot"> below with:
-         <img src="hero.jpg" alt="Describe the photo">
-       Upload hero.jpg next to this file. Wide/landscape, ~1600px across.
-       Resize it first — a 6MB phone photo will make the page slow. -->
-  <figure class="photo wrap">
-    <div class="slot" role="img" aria-label="Placeholder for tour photograph">
-      <span class="slot__label">Your photo here</span>
-      <span class="slot__hint">Low Library steps, or a group mid-tour</span>
+       The main photograph. To change it, put a new file in the pictures
+       folder and change the src below. Resize it to about 900px wide
+       first - a full-size phone photo makes the page slow to load.
+       Keep width and height matching the real image so the page does
+       not jump around while it loads. -->
+  <section class="hero wrap">
+    <div class="hero__text">
+      <p class="eyebrow">Morningside Heights &middot; New York</p>
+      <h1>Student City Guides - A fresh perspective</h1>
+      <p class="sub">
+        Free private, small-group tours of New York City and the Columbia Campus,
+        led by current students. Designed for anyone looking for a fresh perspective on the city. We highly welcome prospective students and families.
+      </p>
+      <div class="acts">
+        <a class="btn btn--solid" href="#contact">Ask about a tour</a>
+        <!-- EDIT ME - PHONE -->
+        <a class="btn btn--quiet" href="tel:+19796186395">Call (979) 618-6395</a>
+      </div>
     </div>
-  </figure>
+    <figure class="hero__media">
+      <img src="pictures/grad.jpg" width="900" height="1200"
+           alt="Two Columbia graduates in light blue gowns in front of Low Library on Commencement day">
+    </figure>
+  </section>
 
   <section class="offer wrap">
     <h2>Booked ahead, kept small.</h2>
@@ -236,31 +234,26 @@ footer{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,3.25rem)}
   </section>
 
   <!-- EDIT ME - GALLERY
-       Three square placeholders. For each one, replace the whole
-         <div class="slot slot--sq"> ... </div>
-       with:
-         <img src="shot-1.jpg" alt="Describe the photo">
-       Upload the images next to this file. Square-ish, ~800px across.
-       Don't want a gallery? Delete this whole <section> block. -->
+       Three photographs, shown left to right. To swap one out, put the
+       new file in the pictures folder and change its src below. Resize
+       to about 700px wide first.
+       These are tall photos shown in square frames, so the top and
+       bottom get trimmed. object-position controls which part is kept:
+       lower percentages keep more of the top. -->
   <section class="shots wrap">
     <ul class="shots__grid">
       <li>
-        <div class="slot slot--sq" role="img" aria-label="Placeholder for tour photograph">
-          <span class="slot__label">Photo 1</span>
-          <span class="slot__hint">Campus detail</span>
-        </div>
+        <img src="pictures/boat.jpg" width="700" height="933" loading="lazy" decoding="async"
+             alt="A tour group on a boat watching the Midtown Manhattan skyline at dusk">
       </li>
       <li>
-        <div class="slot slot--sq" role="img" aria-label="Placeholder for tour photograph">
-          <span class="slot__label">Photo 2</span>
-          <span class="slot__hint">A group on the steps</span>
-        </div>
+        <img src="pictures/met.jpg" width="700" height="933" loading="lazy" decoding="async"
+             alt="Visitors on the steps of the Metropolitan Museum of Art in autumn">
       </li>
       <li>
-        <div class="slot slot--sq" role="img" aria-label="Placeholder for tour photograph">
-          <span class="slot__label">Photo 3</span>
-          <span class="slot__hint">Somewhere in the city</span>
-        </div>
+        <img src="pictures/winter.jpg" width="700" height="933" loading="lazy" decoding="async"
+             style="object-position:center 32%"
+             alt="Low Library and the surrounding campus under snow on a clear winter morning">
       </li>
     </ul>
   </section>
@@ -350,7 +343,9 @@ footer{border-top:1px solid var(--rule);padding-block:clamp(2.5rem,6vw,3.25rem)}
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce || !('IntersectionObserver' in window)) return;
 
-  var groups = ['.photo', '.offer .row', '.shots__grid li', '.contact__in > *'];
+  // the hero is deliberately not in this list - it is on screen at load,
+  // so fading it in would just make the page flash
+  var groups = ['.offer .row', '.shots__grid li', '.contact__in > *'];
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (!e.isIntersecting) return;
