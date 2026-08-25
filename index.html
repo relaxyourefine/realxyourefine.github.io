@@ -9,7 +9,7 @@
 <!-- ══════════════════════════════════════════════════════════
      TWO THINGS TO EDIT. Both are marked EDIT ME below.
        1. Your phone number  (search: EDIT ME - PHONE)
-       2. Your Formspree ID  (search: EDIT ME - FORM)
+       2. Your Web3Forms key (search: EDIT ME - FORM)
      Then swap the photo placeholder (search: EDIT ME - PHOTO)
      ══════════════════════════════════════════════════════════ -->
 
@@ -113,7 +113,7 @@ form{max-width:30rem}
 .field input::placeholder,.field textarea::placeholder{color:#A3A8AD}
 .field input:focus,.field textarea:focus{border-color:var(--accent)}
 .field textarea{resize:vertical;min-height:6rem}
-input[name="_gotcha"]{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+input[name="botcheck"]{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .fine{margin-top:.875rem;font-size:.8125rem;color:var(--muted)}
 
 /* ---- footer ---- */
@@ -213,8 +213,12 @@ footer{border-top:1px solid var(--rule);padding-block:3.25rem}
       </div>
 
       <!-- EDIT ME - FORM
-           Replace YOUR_FORM_ID with the code from your Formspree endpoint. -->
-      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+           Replace YOUR_ACCESS_KEY_HERE below with the key Web3Forms emails you.
+           Get it at https://web3forms.com - enter your email, and the key
+           arrives in your inbox. It is safe to have this key in public code;
+           that is how Web3Forms is designed to work. -->
+      <form action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
         <div class="field">
           <label for="email">Email</label>
           <input id="email" type="email" name="email" required
@@ -229,8 +233,9 @@ footer{border-top:1px solid var(--rule);padding-block:3.25rem}
           <textarea id="details" name="details" rows="4"
                     placeholder="Dates you're in town, group size, anything specific."></textarea>
         </div>
-        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <input type="hidden" name="_subject" value="Lion Guide — tour enquiry">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="hidden" name="subject" value="Lion Guide — tour enquiry">
+        <input type="hidden" name="from_name" value="Lion Guide website">
         <button class="btn btn--solid btn--full" type="submit">Send enquiry</button>
         <p class="fine">Goes straight to my inbox. No list, no newsletter.</p>
       </form>
